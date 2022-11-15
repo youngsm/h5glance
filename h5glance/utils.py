@@ -3,17 +3,17 @@
 import h5py
 
 _mapping = {
-    h5py.File: "file",
-    h5py.Group: "group",
-    h5py.Dataset: "dataset",
+    h5py.h5f.FileID: "file",
+    h5py.h5g.GroupID: "group",
+    h5py.h5d.DatasetID: "dataset",
 }
 
 
 def register_h5pyd():
-    import h5pyd
-    _mapping[h5pyd.File] = "file"
-    _mapping[h5pyd.Group] = "group"
-    _mapping[h5pyd.Dataset] = "dataset"
+    import h5pyd._hl.objectid as h5pyd_obj
+    _mapping[h5pyd_obj.FileID] = "file"
+    _mapping[h5pyd_obj.GroupID] = "group"
+    _mapping[h5pyd_obj.DatasetID] = "dataset"
 
 
 def check_class(obj_class):
@@ -31,10 +31,10 @@ def get_h5py_kind(obj):
     The result can be `file`, `group`, `dataset` or `None` if the object is not
     an h5py-like object.
     """
-    obj_class = type(obj)
-    if obj_class not in _mapping:
-        check_class(obj_class)
-    return _mapping.get(obj_class, None)
+    obj_id_class = type(getattr(obj, "id", None))
+    if obj_id_class not in _mapping:
+        check_class(obj_id_class)
+    return _mapping.get(obj_id_class, None)
 
 
 def is_file(obj):

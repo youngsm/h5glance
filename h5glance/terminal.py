@@ -132,7 +132,7 @@ class TreeViewBuilder:
         else:
             color_start = ''
 
-        obj_id = obj._id
+        obj_id = obj._id # mem address
 
         if obj_id in self.visited:
             # Hardlink to an object we've seen before
