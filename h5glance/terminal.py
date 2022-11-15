@@ -85,7 +85,9 @@ def print_dataset_info(ds: h5py.Dataset, slice_expr=None, file=None):
             select = (0,) * (ds.ndim - 2) + (slice(0, 10),) * 2
             print(ds[select], file=file)
 
-    print('\n{} attributes:'.format(len(ds.attrs)), file=file)
+    # yes, I'm pedantic
+    add = "s" if len(ds.attrs) != 1 else ""
+    print('\n{} attribute{}:'.format(len(ds.attrs), add), file=file)
     for k in ds.attrs:
         print('* ', k, ': ', fmt_attr(k, ds.attrs), sep='', file=file)
 
@@ -147,7 +149,8 @@ class TreeViewBuilder:
             children += attrs_tree_nodes(obj)
         else:
             n = len(obj.attrs)
-            attr_detail = ' ({} attributes)'.format(n) if n else ''
+            add = "s" if n != 1 else ""
+            attr_detail = ' ({} attribute{})'.format(n, add) if n else ''
 
         if isinstance(obj, h5py.Dataset):
             detail = '\t[{dt}: {shape}]'.format(
