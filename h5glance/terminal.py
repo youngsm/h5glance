@@ -130,7 +130,7 @@ class TreeViewBuilder:
         else:
             color_start = ''
 
-        obj_id = h5py.h5o.get_info(obj.id).addr
+        obj_id = obj._id
 
         if obj_id in self.visited:
             # Hardlink to an object we've seen before
